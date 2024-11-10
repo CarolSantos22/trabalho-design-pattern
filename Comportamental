@@ -1,0 +1,110 @@
+interface Command {
+    void execute();
+}
+
+class Carro {
+    public void ligar() {
+        System.out.println("O carro está ligado");
+    }
+
+    public void desligar() {
+        System.out.println("O carro está desligado");
+    }
+
+    public void movimentar() {
+        System.out.println("O carro está em movimento");
+    }
+
+    public void parar() {
+        System.out.println("O carro está parado");
+    }
+}
+
+class LigarCarroCommand implements Command {
+    private Carro carro;
+
+    public LigarCarroCommand(Carro carro) {
+        this.carro = carro;
+    }
+
+    @Override
+    public void execute() {
+        carro.ligar();
+    }
+}
+
+class DesligarCarroCommand implements Command {
+    private Carro carro;
+
+    public DesligarCarroCommand(Carro carro) {
+        this.carro = carro;
+    }
+
+    @Override
+    public void execute() {
+        carro.desligar();
+    }
+}
+
+class AcelerarCarroCommand implements Command {
+    private Carro carro;
+
+    public AcelerarCarroCommand(Carro carro) {
+        this.carro = carro;
+    }
+
+    @Override
+    public void execute() {
+        carro.movimentar();  
+    }
+}
+
+class FrearCarroCommand implements Command {
+    private Carro carro;
+
+    public FrearCarroCommand(Carro carro) {
+        this.carro = carro;
+    }
+
+    @Override
+    public void execute() {
+        carro.parar();  
+    }
+}
+
+class ControleRemoto {
+    private Command comando;
+
+    public void setComando(Command comando) {
+        this.comando = comando;
+    }
+
+    public void pressionarBotao() {
+        comando.execute();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Carro meuCarro = new Carro();
+
+        Command ligarCarro = new LigarCarroCommand(meuCarro);
+        Command desligarCarro = new DesligarCarroCommand(meuCarro);
+        Command acelerarCarro = new AcelerarCarroCommand(meuCarro);
+        Command frearCarro = new FrearCarroCommand(meuCarro);
+
+        ControleRemoto controle = new ControleRemoto();
+
+        controle.setComando(ligarCarro);
+        controle.pressionarBotao();  
+
+        controle.setComando(acelerarCarro);
+        controle.pressionarBotao();  
+
+        controle.setComando(frearCarro);
+        controle.pressionarBotao(); 
+
+        controle.setComando(desligarCarro);
+        controle.pressionarBotao(); 
+    }
+}

@@ -1,0 +1,101 @@
+abstract class Carro {
+    protected String modelo;
+    protected double precoBase;
+
+    public Carro(String modelo, double precoBase) {
+        this.modelo = modelo;
+        this.precoBase = precoBase;
+    }
+
+    public abstract double getPreco();
+    public abstract String descricao();
+}
+
+class CarroBasico extends Carro {
+    public CarroBasico(String modelo, double precoBase) {
+        super(modelo, precoBase);
+    }
+
+    @Override
+    public double getPreco() {
+        return precoBase;
+    }
+
+    @Override
+    public String descricao() {
+        return modelo + " - Preço: R$" + precoBase;
+    }
+}
+
+abstract class CarroDecorator extends Carro {
+    protected Carro carroDecorado;
+
+    public CarroDecorator(Carro carroDecorado) {
+        super(carroDecorado.modelo, carroDecorado.precoBase); 
+        this.carroDecorado = carroDecorado;
+    }
+
+    @Override
+    public abstract double getPreco();
+    @Override
+    public abstract String descricao();
+}
+
+class ArCondicionado extends CarroDecorator {
+    public ArCondicionado(Carro carroDecorado) {
+        super(carroDecorado);
+    }
+
+    @Override
+    public double getPreco() {
+        return carroDecorado.getPreco() + 3500;  
+    }
+
+    @Override
+    public String descricao() {
+        return carroDecorado.descricao() + ", com Ar Condicionado";
+    }
+}
+
+class RodasEsportivas extends CarroDecorator {
+    public RodasEsportivas(Carro carroDecorado) {
+        super(carroDecorado);
+    }
+
+    @Override
+    public double getPreco() {
+        return carroDecorado.getPreco() + 5000;  
+    }
+
+    @Override
+    public String descricao() {
+        return carroDecorado.descricao() + ", com Rodas Esportivas";
+    }
+}
+
+class TetoSolar extends CarroDecorator {
+    public TetoSolar(Carro carroDecorado) {
+        super(carroDecorado);
+    }
+
+    @Override
+    public double getPreco() {
+        return carroDecorado.getPreco() + 4500;  
+    }
+
+    @Override
+    public String descricao() {
+        return carroDecorado.descricao() + ", com Teto Solar";
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Carro carroBasico = new CarroBasico("Fusca", 30000);
+
+        Carro carroComTudo = new ArCondicionado(new RodasEsportivas(new TetoSolar(carroBasico)));
+
+        System.out.println(carroComTudo.descricao());
+        System.out.println("Preço Final: R$" + carroComTudo.getPreco());
+    }
+}

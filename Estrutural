@@ -1,0 +1,113 @@
+import java.util.ArrayList;
+import java.util.List;
+
+interface ComponenteCarro {
+    void descricao();  
+    double valor();    
+}
+
+class Roda implements ComponenteCarro {
+    private String tipo;
+    private double valor;
+
+    public Roda(String tipo, double valor) {
+        this.tipo = tipo;
+        this.valor = valor;
+    }
+
+    @Override
+    public void descricao() {
+        System.out.println("Roda: " + tipo);
+    }
+
+    @Override
+    public double valor() {
+        return valor;
+    }
+}
+
+class Porta implements ComponenteCarro {
+    private String tipo;
+    private double valor;
+
+    public Porta(String tipo, double valor) {
+        this.tipo = tipo;
+        this.valor = valor;
+    }
+
+    @Override
+    public void descricao() {
+        System.out.println("Porta: " + tipo);
+    }
+
+    @Override
+    public double valor() {
+        return valor;
+    }
+}
+
+class Carro implements ComponenteCarro {
+    private String modelo;
+    private double valorBase;
+    private List<ComponenteCarro> componentes;
+
+    public Carro(String modelo, double valorBase) {
+        this.modelo = modelo;
+        this.valorBase = valorBase;
+        this.componentes = new ArrayList<>();
+    }
+
+    public void adicionarComponente(ComponenteCarro componente) {
+        componentes.add(componente);
+    }
+
+    public void removerComponente(ComponenteCarro componente) {
+        componentes.remove(componente);
+    }
+
+    @Override
+    public void descricao() {
+        System.out.println("Modelo do carro: " + modelo);
+        System.out.println("Valor base: R$" + valorBase);
+        for (ComponenteCarro componente : componentes) {
+            componente.descricao();
+        }
+    }
+
+    @Override
+    public double valor() {
+        double valorTotal = valorBase;
+        for (ComponenteCarro componente : componentes) {
+            valorTotal += componente.valor();
+        }
+        return valorTotal;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Roda roda1 = new Roda("Pneumática", 500);
+        Roda roda2 = new Roda("Pneumática", 500);
+        Porta porta1 = new Porta("Frontal", 1500);
+        Porta porta2 = new Porta("Traseira", 1200);
+
+        Carro carro = new Carro("Fusca", 30000);
+        carro.adicionarComponente(roda1);  
+        carro.adicionarComponente(roda2); 
+        carro.adicionarComponente(porta1); 
+        carro.adicionarComponente(porta2); 
+
+        carro.descricao();
+        System.out.println("Valor total do carro: R$" + carro.valor());
+
+        Roda roda3 = new Roda("Esportiva", 1000);
+        Porta porta3 = new Porta("Elétrica", 2500);
+
+        Carro outroCarro = new Carro("Gol", 35000);
+        outroCarro.adicionarComponente(roda3); 
+        outroCarro.adicionarComponente(porta3); 
+
+        outroCarro.descricao();
+        System.out.println("Valor total do outro carro: R$" + outroCarro.valor());
+    }
+}
